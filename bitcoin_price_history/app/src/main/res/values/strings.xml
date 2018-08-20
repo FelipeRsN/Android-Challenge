@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Bitcoin Price History</string>
+    <string name="noNetworkAvailable">No internet detected</string>
+    <string name="tryAgain">Try again</string>
 </resources>
