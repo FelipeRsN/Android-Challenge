@@ -1,4 +1,4 @@
-package felipesilveira.bitcoinpricehistory
+package felipesilveira.bitcoinpricehistorical
 
 import org.junit.Test
 

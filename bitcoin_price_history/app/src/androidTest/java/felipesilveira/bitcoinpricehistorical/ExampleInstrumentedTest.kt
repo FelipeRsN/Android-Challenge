@@ -1,4 +1,4 @@
-package felipesilveira.bitcoinpricehistory
+package felipesilveira.bitcoinpricehistorical
 
 import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4

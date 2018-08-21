@@ -1,7 +1,7 @@
-package felipesilveira.bitcoinpricehistory.connection
+package felipesilveira.bitcoinpricehistorical.connection
 
 import android.os.AsyncTask
-import felipesilveira.bitcoinpricehistory.utils.App
+import felipesilveira.bitcoinpricehistorical.utils.App
 import org.json.JSONObject
 import java.io.BufferedInputStream
 import java.io.BufferedReader
@@ -15,7 +15,9 @@ class BitcoinHistoricalConnection : AsyncTask<String, String, JSONObject>() {
     override fun doInBackground(vararg params: String): JSONObject? {
         val data: JSONObject?
 
-        val url = URL(App.CONNECTION_BASE_URL+params[0])
+        val fullUrl = App.CONNECTION_BASE_URL+App.CONNECTION_HISTORICAL_ENDPOINT+params[0]
+
+        val url = URL(fullUrl)
         val urlConnection = url.openConnection() as HttpURLConnection
 
         val stream = BufferedInputStream(urlConnection.inputStream)

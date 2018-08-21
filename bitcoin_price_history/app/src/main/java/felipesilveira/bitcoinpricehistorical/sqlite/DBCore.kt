@@ -1,4 +1,4 @@
-package felipesilveira.bitcoinpricehistory.sqlite
+package felipesilveira.bitcoinpricehistorical.sqlite
 
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
@@ -8,8 +8,8 @@ class DBCore private constructor(ctx: Context) : SQLiteOpenHelper(ctx, DB_NAME, 
 
     companion object {
         private var db: DBCore? = null
-        private val DB_NAME = "BitcoinPriceHistory"
-        private val DB_VERSION = 1
+        private val DB_NAME = "BitcoinPriceHistorical"
+        private val DB_VERSION = 2
 
         fun getInstance(ctx: Context): DBCore? {
             if (db == null) db = DBCore(ctx)
@@ -18,15 +18,18 @@ class DBCore private constructor(ctx: Context) : SQLiteOpenHelper(ctx, DB_NAME, 
     }
 
     override fun onCreate(db: SQLiteDatabase) {
-        db.execSQL("create table cryptoCache(cachedItems text, lastModifiedDate date)")
+        db.execSQL("create table bitcoinCache(cachedItems text)")
+        db.execSQL("create table bitcoinCurrentValue(currentPrice text, lastModifiedDate date)")
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-        db.execSQL("drop table IF EXISTS cryptoCache;")
+        db.execSQL("drop table IF EXISTS bitcoinCache;")
+        db.execSQL("drop table IF EXISTS bitcoinCurrentValue;")
     }
 
     override fun onDowngrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-        db.execSQL("drop table IF EXISTS cryptoCache;")
+        db.execSQL("drop table IF EXISTS bitcoinCache;")
+        db.execSQL("drop table IF EXISTS bitcoinCurrentValue;")
         onCreate(db)
     }
 }
