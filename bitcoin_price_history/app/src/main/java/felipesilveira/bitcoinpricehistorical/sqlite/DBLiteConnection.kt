@@ -4,6 +4,8 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import felipesilveira.bitcoinpricehistorical.model.BitcoinHistorical
+import java.util.*
+import kotlin.collections.ArrayList
 
 class DBLiteConnection private constructor(context: Context) {
     private val db: SQLiteDatabase?
@@ -26,7 +28,7 @@ class DBLiteConnection private constructor(context: Context) {
     // detect if has cached items
     val hasHistoricalCached: Boolean
         get() {
-            val columns = arrayOf("cachedItems")
+            val columns = arrayOf("cachedPrice")
             val cursor = db?.query("bitcoinCache", columns, null, null, null, null, null)
             return if(cursor != null && cursor.moveToFirst()){
                 cursor.close()
@@ -64,10 +66,27 @@ class DBLiteConnection private constructor(context: Context) {
     val getLastModifiedDate: String
         get() {
             val columns = arrayOf("lastModifiedDate")
-            val cursor = db?.query("cryptoCache", columns, null, null, null, null, null)
+            val cursor = db?.query("bitcoinCurrentValue", columns, null, null, null, null, null)
             return if(cursor != null && cursor.moveToFirst()){
                 cursor.getString(0)
             }else ""
+        }
+
+    val getHistorical: ArrayList<BitcoinHistorical>?
+        get() {
+            val columns = arrayOf("cachedPrice, cachedDate")
+            val cursor = db?.query("bitcoinCache", columns, null, null, null, null, null)
+            val array = ArrayList<BitcoinHistorical>()
+            if(cursor != null && cursor.moveToFirst()){
+                while(!cursor.isAfterLast){
+                    array.add(BitcoinHistorical(cursor.getString(0), cursor.getString(1)))
+                    cursor.moveToNext()
+                }
+                cursor.close()
+                return array
+            }else{
+                return null
+            }
         }
 
     /////////////////////////////////////////////////////////////
@@ -79,9 +98,10 @@ class DBLiteConnection private constructor(context: Context) {
         db?.insert("bitcoinCurrentValue", null, values)
     }
 
-    fun insertHistoricalToCache(array: ArrayList<BitcoinHistorical>) {
+    fun insertHistoricalToCache(price: String, date: String) {
         val values = ContentValues()
-        values.put("cachedItems", array.toString())
+        values.put("cachedPrice", price)
+        values.put("cachedDate", date)
         db?.insert("bitcoinCache", null, values)
     }
 
