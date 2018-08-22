@@ -4,5 +4,5 @@
     <string name="tryAgain">Try again</string>
     <string name="lastUpdateAt">last update at </string>
     <string name="swipeToRefresh">Swipe down to refresh</string>
-    <string name="lastPrice">Current price: </string>
+    <string name="lastPrice">Current price</string>
 </resources>

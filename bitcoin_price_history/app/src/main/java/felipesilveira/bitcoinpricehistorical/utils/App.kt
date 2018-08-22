@@ -13,9 +13,9 @@ class App : Application(){
 
         const val SELECTED_CURRENCY = "BRL"
 
-        const val CONNECTION_BASE_URL = "https://api.coindesk.com/v1/bpi"
-        const val CONNECTION_HISTORICAL_ENDPOINT = "/historical/close.json"
-        const val CONNECTION_CURRENTPRICE_ENDPOINT = "/currentprice/$SELECTED_CURRENCY.json"
+        const val CONNECTION_BASE_URL = "https://api.coindesk.com/v1/bpi/"
+        const val CONNECTION_HISTORICAL_ENDPOINT = "historical/close.json"
+        const val CONNECTION_CURRENTPRICE_ENDPOINT = "currentprice/$SELECTED_CURRENCY.json"
         const val DATE_INTERVAL_DAYS: Int = -14
 
         //Detected if network is available
@@ -68,13 +68,15 @@ class App : Application(){
             return timeZoneFormat.format(localDate)
         }
 
-        fun getLastUpdateStringFormated(date: String): String{
-            val convertedDate = convertUTCDateToLocalTimeZone(date)
+        fun getLastUpdateStringFormated(date: String?): String{
+            date.let {
+                val convertedDate = convertUTCDateToLocalTimeZone(it!!)
 
-            val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
-            val date = dateFormat.parse(convertedDate)
+                val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
+                val date = dateFormat.parse(convertedDate)
 
-            return DateFormat.getDateTimeInstance().format(date)
+                return DateFormat.getDateTimeInstance().format(date)
+            }
         }
 
         fun formatDateToHistorical(date: String): String{
